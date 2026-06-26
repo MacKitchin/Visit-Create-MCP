@@ -255,3 +255,11 @@ Current repo status: clean, main branch active, last commit is full OpenAPI cove
 ---
 
 **For more detailed guidance, see nested AGENTS.md files in `/src/` subdirectories.**
+
+## Cursor Cloud specific instructions
+
+- Dependencies (`npm install`) are refreshed automatically on VM startup. Standard scripts are in `package.json`: `npm run build`, `npm run dev`, `npm start`.
+- There is no lint config and no automated test suite; "lint" here means the TypeScript type check `npx tsc --noEmit` (and `npm run build`, which runs `tsc`).
+- This is a stdio MCP server, not an HTTP service. It has no port/URL to open in a browser. `npm run dev` / `npm start` will appear to "hang" — that is expected, because the process waits for an MCP client to speak JSON-RPC over stdin/stdout. Do not treat that as a failure.
+- To exercise the server, spawn it from an MCP client over stdio rather than typing into the terminal. A quick way is the SDK client (already a dependency), spawning either `node dist/index.js` (compiled) or `npx tsx src/index.ts` (dev). A successful run completes the `initialize` handshake and returns 52 tools from `tools/list`.
+- `VISIT_API_KEY` is required only at tool-call time (read lazily in `src/services/api-client.ts`), not at startup. Without it, the server still starts, handshakes, and lists tools; any `tools/call` returns the actionable error "VISIT_API_KEY environment variable is required". Set `VISIT_API_KEY` to make real Visit Create API calls succeed.
