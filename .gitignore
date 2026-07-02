@@ -3,3 +3,15 @@ dist/
 .env
 *.log
 .DS_Store
+
+# Claude-specific settings
+.claude/
+
+# Agent instruction files (development-specific)
+AGENTS.md
+ARCHITECTURE.md
+PLANS.md
+SUBAGENTS.md
+INSTRUCTION-SYSTEM-SUMMARY.md
+src/**/AGENTS.md
+.agents/
